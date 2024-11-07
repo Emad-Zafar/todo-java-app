@@ -5,7 +5,7 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 # Copy the compiled JAR file (update `todo-app.jar` with your actual filename)
-COPY target/todo-app.jar /app/todo-app.jar
+COPY todo-app.jar /app/todo-app.jar
 
 # Expose the application's port (e.g., 8080)
 EXPOSE 8080
