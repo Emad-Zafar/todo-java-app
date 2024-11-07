@@ -1,14 +1,19 @@
-# Use an official OpenJDK image as the base
-FROM openjdk:11-jre-slim
+# Use an official OpenJDK 21 image as the base
+FROM openjdk:21
 
-# Set the working directory
+# Install Xvfb to simulate a display for GUI applications
+RUN apt-get update && \
+    apt-get install -y xvfb && \
+    apt-get clean
+
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the compiled JAR file (update `todo-app.jar` with your actual filename)
-COPY todo-app.jar /app/todo-app.jar
+# Copy the application source code into the container
+COPY . /app
 
-# Expose the application's port (e.g., 8080)
-EXPOSE 8080
+# Compile the Java application
+RUN javac ToDoList.java
 
-# Command to run the application
-CMD ["java", "-jar", "todo-app.jar"]
+# Start Xvfb in the background and run the application
+CMD ["sh", "-c", "Xvfb :99 -screen 0 1024x768x16 & java -Djava.awt.headless=false ToDoList"]
