@@ -1,19 +1,17 @@
-# Use an official OpenJDK 21 image as the base
+# Use OpenJDK 21 as base image
 FROM openjdk:21
 
-# Install Xvfb to simulate a display for GUI applications
-RUN apt-get update && \
-    apt-get install -y xvfb && \
-    apt-get clean
+# Install Gradle
+RUN apt-get update && apt-get install -y gradle && apt-get clean
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy the application source code into the container
+# Copy the application code
 COPY . /app
 
-# Compile the Java application
-RUN javac ToDoList.java
+# Build the application
+RUN gradle build
 
-# Start Xvfb in the background and run the application
-CMD ["sh", "-c", "Xvfb :99 -screen 0 1024x768x16 & java -Djava.awt.headless=false ToDoList"]
+# Command to run the application
+CMD ["java", "-jar", "build/libs/your-application.jar"]
